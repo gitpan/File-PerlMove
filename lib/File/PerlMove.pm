@@ -2,18 +2,18 @@
 
 package File::PerlMove;
 
-my $RCS_Id = '$Id: PerlMove.pm,v 1.6 2007/08/15 12:00:26 jv Exp $ ';
+my $RCS_Id = '$Id: PerlMove.pm,v 1.8 2011/07/15 12:17:49 jv Exp $ ';
 
 # Author          : Johan Vromans
 # Created On      : Tue Sep 15 15:59:04 1992
 # Last Modified By: Johan Vromans
-# Last Modified On: Thu Mar 13 20:23:51 2008
-# Update Count    : 155
+# Last Modified On: Fri Jul 15 14:12:37 2011
+# Update Count    : 167
 # Status          : Unknown, Use with caution!
 
 ################ Common stuff ################
 
-our $VERSION = "0.05";
+our $VERSION = "0.06";
 
 use strict;
 use warnings;
@@ -106,8 +106,12 @@ sub move {
 sub build_sub {
     my $cmd = shift;
     # Special treatment for some.
-    if ( $cmd =~ /^uc|lc|ucfirst$/ ) {
+    if ( $cmd =~ /^(uc|lc|ucfirst)$/ ) {
 	$cmd = '$_ = ' . $cmd;
+    }
+    elsif ( $cmd =~ /^:(.+):(.+):$/ ) {
+	require Encode;
+	$cmd = 'Encode::from_to($_,"'.$1.'","'.$2.'")';
     }
 
     # Build subroutine.
@@ -198,9 +202,13 @@ See B<pmv> for examples.
 
 Johan Vromans <jvromans@squirrel.nl>
 
+=head1 SEE ALSO
+
+App::perlmv (and perlvm), File::Rename (and rename).
+
 =head1 COPYRIGHT
 
-This programs is Copyright 2004,2007 Squirrel Consultancy.
+This programs is Copyright 2004,2010 Squirrel Consultancy.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Perl Artistic License or the GNU General

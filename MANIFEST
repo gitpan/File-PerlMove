@@ -10,4 +10,3 @@ t/01basic.t
 t/02link.t
 t/03symlink.t
 t/04dirs.t
-META.yml                                 Module meta-data (added by MakeMaker)
